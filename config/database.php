@@ -1,4 +1,4 @@
-<?
+<?php
     // fungsi untuk koneksi ke database
     function connectDB() {
         $host = 'localhost';
