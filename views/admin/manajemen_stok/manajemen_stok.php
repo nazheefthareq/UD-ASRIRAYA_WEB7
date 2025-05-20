@@ -1,3 +1,9 @@
+<?php
+    require_once __DIR__ . '/../../../models/produk.php';
+    $produkModel = new Produk();
+    $produkList = $produkModel->getAllProduk();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,15 +13,15 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
         body {
-            background-color: #f0f2ff;
+            background-color: #F4F6FF;
             font-family: Plus Jakarta Sans;
         }
         .sidebar .logo{
-            color: #ffc107;
+            color: #F3C623;
         }
         .sidebar {
             height: 100vh;
-            background-color: #0d2a4c;
+            background-color: #10375C;
             color: #fff;
         }
         .sidebar a {
@@ -25,10 +31,10 @@
             padding: 12px 20px;
         }
         .sidebar a:hover {
-            color: #ffc107;
+            color: #F3C623;
         }
         .info-card {
-            background-color: #0d2a4c;
+            background-color: #10375C;
             color: #fff;
             border-radius: 10px;
             padding: 20px;
@@ -38,8 +44,8 @@
             font-weight: bold;
         }
         .table thead th{
-            background-color: #0d2a4c;
-            color: #ffc107;
+            background-color: #10375C;
+            color: #F3C623;
         }
     </style>
 </head>
@@ -48,10 +54,10 @@
     <div class="row">
         <!-- Sidebar -->
         <div class="col-md-2 sidebar p-0">
-            <div class="logo p-3 fw-bold fs-5 d-flex gap-3"><img src="logo.png" alt="logo" width="35" height="35">Asri Raya Admin</div>
+            <div class="logo p-3 fw-bold fs-5 d-flex gap-3"><img src="../../../assets/img/logo.png" alt="logo" width="35" height="35">Asri Raya Admin</div>
             <a href="#"class="d-flex gap-2"><i class="bi bi-grid"></i>Dashboard</a>
             <a href="#" class="d-flex gap-2"><i class="bi bi-inbox-fill"></i>Kasir</a>
-            <a href="#" class="d-flex gap-2"><i class="bi bi-archive"></i>Stok Barang</a>
+            <a href="#" class="d-flex gap-2" style="color: #F3C623"><i class="bi bi-archive"></i>Stok Barang</a>
             <a href="#" class="d-flex gap-2"><i class="bi bi-clipboard2-data"></i>Laporan Keuangan</a>
             <a href="#" class="d-flex gap-2"><i class="bi bi-journal-text"></i>Manajemen Artikel</a>
         </div>
@@ -64,19 +70,19 @@
             <div class="row mb-4">
                 <div class="col-md-4">
                     <div class="info-card">
-                        <h3 style="color: #ffc107">768</h3>
+                        <h3 style="color: #F3C623">768</h3>
                         <p>Jumlah Barang</p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="info-card">
-                        <h3 style="color: #ffc107">11</h3>
+                        <h3 style="color: #F3C623">11</h3>
                         <p>Stok Menipis</p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="info-card">
-                        <h3 style="color: #ffc107">Cat Dinding</h3>
+                        <h3 style="color: #F3C623">Cat Dinding</h3>
                         <p>Barang Terlaris</p>
                     </div>
                 </div>
@@ -86,9 +92,7 @@
             <h2 class="mb-4 fw-bold">Daftar Barang</h2>
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <input type="text" class="form-control w-50" placeholder="Cari barang...">
-                <button class="btn" style="background-color: #0d2a4c; color: #fff;">
-                    Tambah Barang <strong>+</strong>
-                </button>
+                <a href="tambahproduk.php"><button class="btn" style="background-color: #0d2a4c; color: #fff;">Tambah Barang <strong class="" style="color: #F3C623">+</strong></button></a>
             </div>
 
             <!-- Tabel -->
@@ -105,7 +109,25 @@
                     </tr>
                 </thead>
                 <tbody>
-                    
+                    <?php while ($row = $produkList->fetch(PDO::FETCH_ASSOC)): ?>
+                    <tr>
+                        <td><?php echo $row['nama_produk']?></td>
+                        <td><?php echo $row['nama_kategori']?></td>
+                        <td><?php echo $row['satuan']?></td>
+                        <td><?php echo $row['harga_beli']?></td>
+                        <td><?php echo $row['harga_jual']?></td>
+                        <td><?php echo $row['stok_produk']?></td>
+                        <td>
+                            <a href="editproduk.php?id=<?= $row['id_produk'] ?>" class="btn btn-success btn-sm">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                            <form action="../../../controllers/stokController.php" method="POST" onsubmit="return confirm('Yakin ingin menghapus data produk <?= $row['nama_produk'] ?>?');">
+                                <input type="hidden" name="id" value="<?= $row['id_produk'] ?>">
+                                    <button type="submit" name="hapus" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
+                            </form>
+                        </td>
+                    </tr>
+                    <?php endwhile ?>
                 </tbody>
             </table>
         </div>
