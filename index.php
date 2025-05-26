@@ -1,14 +1,17 @@
 <?php
-require_once 'config/database.php'; // koneksi DB
+require_once 'config/database.php';
+
 $conn = connectDB();
 
-// Ambil data kategori produk (jika ada)
-$queryKategori = "SELECT id_kategori, nama_kategori FROM kategori_produk ORDER BY nama_kategori";
-$resultKategori = $conn->query($queryKategori);
+// Ambil data kategori produk
+$stmtKategori = $conn->prepare("SELECT id_kategori, nama_kategori FROM kategori_produk ORDER BY nama_kategori");
+$stmtKategori->execute();
+$kategoriList = $stmtKategori->fetchAll(PDO::FETCH_ASSOC);
 
-// Ambil data produk (contoh ambil 6 produk terbaru)
-$queryProduk = "SELECT id_produk, nama_produk, harga_jual FROM stok_produk ORDER BY id_produk DESC LIMIT 6";
-$resultProduk = $conn->query($queryProduk);
+// Ambil data produk terbaru (6 produk)
+$stmtProduk = $conn->prepare("SELECT id_produk, nama_produk, harga_jual FROM stok_produk ORDER BY id_produk DESC LIMIT 6");
+$stmtProduk->execute();
+$produkList = $stmtProduk->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -19,6 +22,7 @@ $resultProduk = $conn->query($queryProduk);
     <title>UD Asri Raya - Homepage</title>
     <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <style>
+        /* CSS sesuai desain sebelumnya */
         body { background-color: #f0f3fa; }
         .navbar-custom { background-color: #103466; }
         .navbar-custom .navbar-brand, .navbar-custom .nav-link { color: white; }
@@ -68,26 +72,27 @@ $resultProduk = $conn->query($queryProduk);
 <div class="container mt-5">
     <h5>Kategori</h5>
     <div class="section-grey d-flex justify-content-between flex-wrap">
-        <?php while ($kategori = $resultKategori->fetch_assoc()) : ?>
+        <?php foreach ($kategoriList as $kategori) : ?>
             <div class="product-box col-5 col-md-2">
                 <div class="product-img-placeholder">Kategori</div>
                 <div class="product-price"><?= htmlspecialchars($kategori['nama_kategori']) ?></div>
             </div>
-        <?php endwhile; ?>
+        <?php endforeach; ?>
     </div>
 
     <h5>Brand Produk Kami</h5>
     <div class="section-grey d-flex justify-content-between flex-wrap">
-        <?php while ($produk = $resultProduk->fetch_assoc()) : ?>
+        <?php foreach ($produkList as $produk) : ?>
             <div class="product-box col-5 col-md-2">
                 <div class="product-img-placeholder">Produk</div>
                 <div class="product-price">Rp<?= number_format($produk['harga_jual'], 0, ',', '.') ?></div>
                 <div><?= htmlspecialchars($produk['nama_produk']) ?></div>
             </div>
-        <?php endwhile; ?>
+        <?php endforeach; ?>
     </div>
 
-    <!-- Deskripsi Produk bisa statis seperti sebelumnya -->
+    <!-- Bagian deskripsi produk statis sesuai desain -->
+    <!-- ... -->
 
 </div>
 
