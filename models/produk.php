@@ -9,9 +9,18 @@
             $this->conn = $conn;
         }
 
-        public function getAllProduk(){
+        public function getAllProduk($keyword = null){
             $sql = "SELECT sp.id_produk,kp.nama_kategori, sp.nama_produk, sp.satuan, sp.harga_beli, sp.harga_jual, sp.stok_produk FROM stok_produk sp JOIN kategori_produk kp ON sp.id_kategori = kp.id_kategori";
-            return $this->conn->query($sql);
+            if ($keyword) {
+                $sql .= " WHERE sp.nama_produk LIKE :keyword OR kp.nama_kategori LIKE :keyword";
+                $stmt = $this->conn->prepare($sql);
+                $keyword = "%" . $keyword . "%";
+                $stmt->bindParam(":keyword", $keyword);
+                $stmt->execute();
+                return $stmt;
+            } else {
+                return $this->conn->query($sql);
+            }
         }
 
         public function getProdukID($id){

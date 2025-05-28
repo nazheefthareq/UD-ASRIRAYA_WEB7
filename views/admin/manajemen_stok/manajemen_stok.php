@@ -1,7 +1,8 @@
 <?php
     require_once __DIR__ . '/../../../models/produk.php';
     $produkModel = new Produk();
-    $produkList = $produkModel->getAllProduk();
+    $keyword = isset($_GET['search']) ? $_GET['search'] : null;
+    $produkList = $produkModel->getAllProduk($keyword);
     $totalproduk = $produkModel->countProduk();
     $produkTerbanyak = $produkModel->getProdukStokTerbanyak();
     $produkTersedikit = $produkModel->getProdukStokTersedikit();
@@ -40,8 +41,9 @@
             background-color: #10375C;
             color: #fff;
             border-radius: 10px;
-            padding: 20px;
+            padding: 35px;
             text-align: center;
+            min-height: 150px;
         }
         .info-card h3 {
             font-weight: bold;
@@ -94,7 +96,12 @@
             <!-- Pencarian dan Tambah -->
             <h2 class="mb-4 fw-bold">Daftar Barang</h2>
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <input type="text" class="form-control w-50" placeholder="Cari barang...">
+                <form method="GET" class="mb-3 w-100" style="max-width: 600px;">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="search" placeholder="Cari nama barang..." value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
+                        <button class="btn" style="background-color: #0d2a4c; color: #fff;" type="submit">Cari</button>
+                    </div>
+                </form>
                 <a href="tambahproduk.php"><button class="btn" style="background-color: #0d2a4c; color: #fff;">Tambah Barang <strong class="" style="color: #F3C623">+</strong></button></a>
             </div>
 
