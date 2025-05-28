@@ -51,5 +51,11 @@
             $query->bindParam(":id",$id);
             return $query->execute();
         }
+
+        public function countProduk(){
+            $query = $this->conn->query("SELECT COUNT(*) AS total FROM stok_produk");
+            $result = $query->fetch(PDO::FETCH_ASSOC);
+            return $result['total'];
+        }
     }
 ?>

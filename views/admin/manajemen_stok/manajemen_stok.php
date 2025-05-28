@@ -2,6 +2,7 @@
     require_once __DIR__ . '/../../../models/produk.php';
     $produkModel = new Produk();
     $produkList = $produkModel->getAllProduk();
+    $totalproduk = $produkModel->countProduk();
 ?>
 
 <!DOCTYPE html>
@@ -70,7 +71,7 @@
             <div class="row mb-4">
                 <div class="col-md-4">
                     <div class="info-card">
-                        <h3 style="color: #F3C623">768</h3>
+                        <h3 style="color: #F3C623"><?= $totalproduk ?></h3>
                         <p>Jumlah Barang</p>
                     </div>
                 </div>
@@ -118,13 +119,17 @@
                         <td><?php echo $row['harga_jual']?></td>
                         <td><?php echo $row['stok_produk']?></td>
                         <td>
-                            <a href="editproduk.php?id=<?= $row['id_produk'] ?>" class="btn btn-success btn-sm">
-                                <i class="bi bi-pencil-square"></i>
-                            </a>
-                            <form action="../../../controllers/stokController.php" method="POST" onsubmit="return confirm('Yakin ingin menghapus data produk <?= $row['nama_produk'] ?>?');">
-                                <input type="hidden" name="id" value="<?= $row['id_produk'] ?>">
-                                    <button type="submit" name="hapus" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
-                            </form>
+                            <div class="d-flex gap-1">
+                                <a href="editproduk.php?id=<?= $row['id_produk'] ?>" class="btn btn-success btn-sm">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                                <form action="../../../controllers/stokController.php" method="POST" onsubmit="return confirm('Yakin ingin menghapus data produk <?= $row['nama_produk'] ?>?');">
+                                    <input type="hidden" name="id" value="<?= $row['id_produk'] ?>">
+                                    <button type="submit" name="hapus" class="btn btn-danger btn-sm">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                     <?php endwhile ?>
