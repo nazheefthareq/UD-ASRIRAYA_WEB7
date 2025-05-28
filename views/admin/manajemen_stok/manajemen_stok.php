@@ -3,6 +3,8 @@
     $produkModel = new Produk();
     $produkList = $produkModel->getAllProduk();
     $totalproduk = $produkModel->countProduk();
+    $produkTerbanyak = $produkModel->getProdukStokTerbanyak();
+    $produkTersedikit = $produkModel->getProdukStokTersedikit();
 ?>
 
 <!DOCTYPE html>
@@ -59,7 +61,7 @@
             <a href="#"class="d-flex gap-2"><i class="bi bi-grid"></i>Dashboard</a>
             <a href="#" class="d-flex gap-2"><i class="bi bi-inbox-fill"></i>Kasir</a>
             <a href="#" class="d-flex gap-2" style="color: #F3C623"><i class="bi bi-archive"></i>Stok Barang</a>
-            <a href="#" class="d-flex gap-2"><i class="bi bi-clipboard2-data"></i>Laporan Keuangan</a>
+            <a href="../laporan_keuangan/laporan_keuangan.php" class="d-flex gap-2"><i class="bi bi-clipboard2-data"></i>Laporan Keuangan</a>
             <a href="#" class="d-flex gap-2"><i class="bi bi-journal-text"></i>Manajemen Artikel</a>
         </div>
 
@@ -77,14 +79,14 @@
                 </div>
                 <div class="col-md-4">
                     <div class="info-card">
-                        <h3 style="color: #F3C623">11</h3>
-                        <p>Stok Menipis</p>
+                        <h3 style="color: #F3C623"><?= $produkTerbanyak['nama_produk']?></h3>
+                        <p>Barang Terbanyak</p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="info-card">
-                        <h3 style="color: #F3C623">Cat Dinding</h3>
-                        <p>Barang Terlaris</p>
+                        <h3 style="color: #F3C623"><?= $produkTersedikit['nama_produk']?></h3>
+                        <p>Barang Tersedikit</p>
                     </div>
                 </div>
             </div>
@@ -120,15 +122,37 @@
                         <td><?php echo $row['stok_produk']?></td>
                         <td>
                             <div class="d-flex gap-1">
+                                <!-- Tombol Edit -->
                                 <a href="editproduk.php?id=<?= $row['id_produk'] ?>" class="btn btn-success btn-sm">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
-                                <form action="../../../controllers/stokController.php" method="POST" onsubmit="return confirm('Yakin ingin menghapus data produk <?= $row['nama_produk'] ?>?');">
-                                    <input type="hidden" name="id" value="<?= $row['id_produk'] ?>">
-                                    <button type="submit" name="hapus" class="btn btn-danger btn-sm">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </form>
+
+                                <!-- Tombol Hapus (trigger modal) -->
+                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalHapus<?= $row['id_produk'] ?>">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+
+                            <!-- Modal Konfirmasi Hapus -->
+                            <div class="modal fade" id="modalHapus<?= $row['id_produk'] ?>" tabindex="-1" aria-labelledby="modalLabel<?= $row['id_produk'] ?>" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header bg-danger text-white">
+                                            <h5 class="modal-title" id="modalLabel<?= $row['id_produk'] ?>">Konfirmasi Hapus</h5>
+                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Apakah Anda yakin ingin menghapus <strong><?= $row['nama_produk'] ?></strong>?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <form action="../../../controllers/stokController.php" method="POST">
+                                                <input type="hidden" name="id" value="<?= $row['id_produk'] ?>">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                                <button type="submit" name="hapus" class="btn btn-danger">Hapus</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </td>
                     </tr>
@@ -141,6 +165,8 @@
 
 <!-- Bootstrap Icon CDN -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+<!-- Bootstrap JS untuk modal -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

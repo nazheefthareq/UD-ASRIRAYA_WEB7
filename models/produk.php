@@ -57,5 +57,17 @@
             $result = $query->fetch(PDO::FETCH_ASSOC);
             return $result['total'];
         }
+
+        public function getProdukStokTerbanyak() {
+            $sql = "SELECT * FROM stok_produk ORDER BY stok_produk DESC LIMIT 1";
+            $stmt = $this->conn->query($sql);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+
+        public function getProdukStokTersedikit() {
+            $sql = "SELECT * FROM stok_produk ORDER BY stok_produk ASC LIMIT 1";
+            $stmt = $this->conn->query($sql);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
     }
 ?>
