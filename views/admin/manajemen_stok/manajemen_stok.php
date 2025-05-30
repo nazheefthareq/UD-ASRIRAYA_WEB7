@@ -1,5 +1,5 @@
 <?php
-    require_once _DIR_ . '/../../../models/produk.php';
+    require_once __DIR__ . '/../../../models/produk.php';
     $produkModel = new Produk();
     $keyword = isset($_GET['search']) ? $_GET['search'] : null;
     $produkList = $produkModel->getAllProduk($keyword);
