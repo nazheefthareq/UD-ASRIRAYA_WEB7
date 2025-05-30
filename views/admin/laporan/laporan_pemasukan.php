@@ -71,8 +71,8 @@ $laporanList = $laporanModel->getAllLaporan();
 
                 <!-- Informasi Kartu -->
                 <div class="row mb-4">
-                    <div class="col-md-4">
-                        <div class="info-card">
+                    <div class="col-xl">
+                        <div class="info-card py-5">
                             <h3 style="color: #F3C623">278.456.200</h3>
                             <p>Total Pemasukan</p>
                         </div>
