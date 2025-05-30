@@ -57,16 +57,9 @@
 <body>
 <div class="container-fluid">
     <div class="row">
-        <!-- Sidebar -->
-        <div class="col-md-2 sidebar p-0">
-            <div class="logo p-3 fw-bold fs-5 d-flex gap-3"><img src="../../../assets/img/logo.png" alt="logo" width="35" height="35">Asri Raya Admin</div>
-            <a href="#"class="d-flex gap-2"><i class="bi bi-grid"></i>Dashboard</a>
-            <a href="#" class="d-flex gap-2"><i class="bi bi-inbox-fill"></i>Kasir</a>
-            <a href="#" class="d-flex gap-2" style="color: #F3C623"><i class="bi bi-archive"></i>Stok Barang</a>
-            <a href="../laporan_keuangan/laporan_keuangan.php" class="d-flex gap-2"><i class="bi bi-clipboard2-data"></i>Laporan Keuangan</a>
-            <a href="#" class="d-flex gap-2"><i class="bi bi-journal-text"></i>Manajemen Artikel</a>
-        </div>
 
+        <!-- Sidebar -->
+        <?php include "../includes/sidebar.php" ?>
         <!-- Main Content -->
         <div class="col-md-10 p-4">
             <h2 class="mb-4 fw-bold">Stok Barang</h2>
