@@ -1,56 +1,33 @@
 <?php
+require_once __DIR__ . '/../config/database.php';
 
-require_once 'config.php';
-require_once ('kasirmodel.php');
+class Laporan {
+    private $conn;
 
-// Tambah ke keranjang
-if (isset($_POST['tambah_keranjang'])) {
-    $id = $_POST['id_produk'];
-    $jumlah = intval($_POST['jumlah']);
-    $produk = getProdukById($conn, $id);
-
-    if ($jumlah > 0 && $jumlah <= $produk['stok_produk']) {
-        $_SESSION['keranjang'][$id] = ($_SESSION['keranjang'][$id] ?? 0) + $jumlah;
+    public function __construct() {
+        $conn = connectDB();
+        $this->conn = $conn;
     }
-}
 
-// Ubah jumlah
-if (isset($_POST['ubah_jumlah'])) {
-    $id = $_POST['id_produk'];
-    $jumlah = intval($_POST['jumlah']);
-
-    // Ambil data stok dari database
-    $query = $conn->query("SELECT stok_produk FROM stok_produk WHERE id_produk = '$id'");
-    $data = $query->fetch_assoc();
-    $stok = $data['stok_produk'];
-
-    if ($jumlah > 0) {
-        if ($jumlah <= $stok) {
-            $_SESSION['keranjang'][$id] = $jumlah;
-        }
+    public function getAllLaporan() {
+        $sql = "SELECT * FROM transaksi_kasir ORDER BY tanggal_transaksi DESC";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-}
 
-
-// Hapus item
-if (isset($_POST['hapus_item'])) {
-    $id = $_POST['id_produk'];
-    unset($_SESSION['keranjang'][$id]);
-}
-
-// Checkout
-if (isset($_POST['checkout'])) {
-    $tanggal = date('Y-m-d');
-    foreach ($_SESSION['keranjang'] as $id => $jumlah) {
-        $produk = getProdukById($conn, $id);
-        $harga = $produk['harga_jual'];
-        $total = $harga * $jumlah;
-
-        simpanTransaksi($conn, $id, $jumlah, $harga, $tanggal, $total);
-        kurangiStok($conn, $id, $jumlah);
+    public function getLaporanByTanggal($dari, $sampai) {
+        $sql = "SELECT * FROM transaksi_kasir 
+                WHERE tanggal_transaksi BETWEEN :dari AND :sampai
+                ORDER BY tanggal_transaksi DESC";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':dari', $dari);
+        $stmt->bindParam(':sampai', $sampai);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    unset($_SESSION['keranjang']);
+
+    
 }
 
-include ('kasirview.php');
 ?>
