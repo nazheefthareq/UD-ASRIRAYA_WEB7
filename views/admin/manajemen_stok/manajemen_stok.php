@@ -38,7 +38,7 @@
         }
         .sidebar a:hover {
             color: #F3C623;
-            background-color: #1D5D9A;
+            /* background-color: #1D5D9A; */
         }
         .info-card {
             background-color: #10375C;

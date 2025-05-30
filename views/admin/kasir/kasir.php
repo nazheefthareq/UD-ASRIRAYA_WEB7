@@ -58,7 +58,14 @@
 </head>
 
 <body>
-    <?php include "../includes/sidebar.php" ?>
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <?php include "../includes/sidebar.php"?>
+
+        <!-- Main Content -->
+        <div class="col-md-10 p-4">
+            <h2 class="mb-4 fw-bold">Sistem Kasir</h2>
 
 </body>
 
