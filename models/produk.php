@@ -76,5 +76,10 @@
             $stmt = $this->conn->query($sql);
             return $stmt->fetch(PDO::FETCH_ASSOC);
         }
+
+        public function kurangiStok($id, $jumlah) {
+            $stmt = $this->conn->prepare("UPDATE stok_produk SET stok_produk = stok_produk - ? WHERE id_produk = ?");
+            return $stmt->execute([$jumlah, $id]);
+        }
     }
 ?>
