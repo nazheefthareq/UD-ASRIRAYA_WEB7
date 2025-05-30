@@ -1,5 +1,5 @@
 <?php
-    require_once _DIR_ . '/../../../models/Produk.php';
+    require_once __DIR__ . '/../../../models/Produk.php';
     session_start();
 
     $produkModel = new Produk();
