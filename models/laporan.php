@@ -10,16 +10,16 @@ class Laporan {
     }
 
     public function getAllLaporan() {
-        $sql = "SELECT * FROM laporan_keuangan ORDER BY tanggal DESC";
+        $sql = "SELECT * FROM transaksi_kasir ORDER BY tanggal_transaksi DESC";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getLaporanByTanggal($dari, $sampai) {
-        $sql = "SELECT * FROM laporan_keuangan 
-                WHERE tanggal BETWEEN :dari AND :sampai
-                ORDER BY tanggal DESC";
+        $sql = "SELECT * FROM transaksi_kasir 
+                WHERE tanggal_transaksi BETWEEN :dari AND :sampai
+                ORDER BY tanggal_transaksi DESC";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(':dari', $dari);
         $stmt->bindParam(':sampai', $sampai);
