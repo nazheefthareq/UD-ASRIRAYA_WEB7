@@ -26,6 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $dari = $_POST['dari'];
         $sampai = $_POST['sampai'];
         $data = $laporanModel->getLaporanByTanggal($dari, $sampai);
+        $totalPemasukan = $laporanModel->getTotalPemasukan();
         include '../views/admin/laporan_keuangan/laporan_keuangan.php';
         exit();
     }
@@ -33,4 +34,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // Default: ambil semua data
 $data = $laporanModel->getAllLaporan();
+include '../views/admin/laporan_keuangan/laporan_keuangan.php';
+
+$data = $laporanModel->getAllLaporan();
+$totalPemasukan = $laporanModel->getTotalPemasukan();
 include '../views/admin/laporan_keuangan/laporan_keuangan.php';

@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../../../models/laporan.php';
 $laporanModel = new Laporan();
 $laporanList = $laporanModel->getAllLaporan();
+$totalPemasukan = $laporanModel->getTotalPemasukan();
 ?>
 
 <!DOCTYPE html>
@@ -73,7 +74,7 @@ $laporanList = $laporanModel->getAllLaporan();
                 <div class="row mb-4">
                     <div class="col-xl">
                         <div class="info-card py-5">
-                            <h3 style="color: #F3C623">278.456.200</h3>
+                            <h3 style="color: #F3C623">Rp <?= number_format($totalPemasukan, 0, ',', '.') ?></h3>
                             <p>Total Pemasukan</p>
                         </div>
                     </div>
