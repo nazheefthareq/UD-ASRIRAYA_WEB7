@@ -1,5 +1,5 @@
 <?php
-    require_once __DIR__ . '/../../../models/produk.php';
+    require_once _DIR_ . '/../../../models/produk.php';
     $produkModel = new Produk();
     $keyword = isset($_GET['search']) ? $_GET['search'] : null;
     $produkList = $produkModel->getAllProduk($keyword);
@@ -14,6 +14,8 @@
     <meta charset="UTF-8">
     <title>Stok Barang</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
         body {
@@ -36,6 +38,7 @@
         }
         .sidebar a:hover {
             color: #F3C623;
+            background-color: #1D5D9A;
         }
         .info-card {
             background-color: #10375C;
@@ -57,9 +60,9 @@
 <body>
 <div class="container-fluid">
     <div class="row">
-
         <!-- Sidebar -->
-        <?php include "../includes/sidebar.php" ?>
+        <?php include "../includes/sidebar.php"?>
+
         <!-- Main Content -->
         <div class="col-md-10 p-4">
             <h2 class="mb-4 fw-bold">Stok Barang</h2>
@@ -81,7 +84,7 @@
                 <div class="col-md-4">
                     <div class="info-card">
                         <h3 style="color: #F3C623"><?= $produkTersedikit['nama_produk']?></h3>
-                        <p>Barang Tersedikit</p>
+                        <p>Barang Terendah</p>
                     </div>
                 </div>
             </div>
@@ -105,7 +108,6 @@
                         <th>Nama Barang</th>
                         <th>Kategori</th>
                         <th>Satuan</th>
-                        <th>Harga Beli</th>
                         <th>Harga Jual</th>
                         <th>Jumlah Stok</th>
                         <th>Aksi</th>
@@ -117,7 +119,6 @@
                         <td><?php echo $row['nama_produk']?></td>
                         <td><?php echo $row['nama_kategori']?></td>
                         <td><?php echo $row['satuan']?></td>
-                        <td><?php echo $row['harga_beli']?></td>
                         <td><?php echo $row['harga_jual']?></td>
                         <td><?php echo $row['stok_produk']?></td>
                         <td>
@@ -162,11 +163,6 @@
         </div>
     </div>
 </div>
-
-<!-- Bootstrap Icon CDN -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-<!-- Bootstrap JS untuk modal -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

@@ -61,10 +61,6 @@
 
                 <div class="row g-3 mt-2">
                     <div class="col-md-6">
-                        <label for="hargaBeli" class="form-label">Harga Beli</label>
-                        <input type="text" class="form-control" name="hargaBeli" placeholder="30.000" value="<?= $produk['harga_beli'] ?>">
-                    </div>
-                    <div class="col-md-6">
                         <label for="hargaJual" class="form-label">Harga Jual</label>
                         <input type="text" class="form-control" name="hargaJual" placeholder="35.000" value="<?= $produk['harga_jual'] ?>">
                     </div>
