@@ -16,7 +16,7 @@ class Artikel
         $result = $this->conn->query($sql);
 
         $data = [];
-        while ($row = $result->fetch_assoc()) {
+        while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
             $data[] = $row;
         }
         return $data;
@@ -25,7 +25,7 @@ class Artikel
     public function getArtikelById($id)
     {
         $stmt = $this->conn->prepare("SELECT * FROM artikel WHERE id_artikel = ?");
-        $stmt->bind_param("i", $id);
+        $stmt->bindParam("i", $id);
         $stmt->execute();
         $result = $stmt->get_result();
         return $result->fetch_assoc();
@@ -34,21 +34,21 @@ class Artikel
     public function tambahArtikel($judul, $isi, $gambar, $tanggal_publish)
     {
         $stmt = $this->conn->prepare("INSERT INTO artikel (judul_artikel, isi_artikel, gambar, tanggal_publish) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("ssss", $judul, $isi, $gambar, $tanggal_publish);
+        $stmt->bindParam("ssss", $judul, $isi, $gambar, $tanggal_publish);
         return $stmt->execute();
     }
 
     public function editArtikel($id, $judul, $isi, $gambar, $tanggal_publish)
     {
         $stmt = $this->conn->prepare("UPDATE artikel SET judul_artikel=?, isi_artikel=?, gambar=?, tanggal_publish=? WHERE id_artikel=?");
-        $stmt->bind_param("ssssi", $judul, $isi, $gambar, $tanggal_publish, $id);
+        $stmt->bindParam("ssssi", $judul, $isi, $gambar, $tanggal_publish, $id);
         return $stmt->execute();
     }
 
     public function hapusArtikel($id)
     {
         $stmt = $this->conn->prepare("DELETE FROM artikel WHERE id_artikel=?");
-        $stmt->bind_param("i", $id);
+        $stmt->bindParam("i", $id);
         return $stmt->execute();
     }
 }

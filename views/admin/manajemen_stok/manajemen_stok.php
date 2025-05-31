@@ -1,42 +1,52 @@
 <?php
-    require_once __DIR__ . '/../../../models/produk.php';
-    $produkModel = new Produk();
-    $keyword = isset($_GET['search']) ? $_GET['search'] : null;
-    $produkList = $produkModel->getAllProduk($keyword);
-    $totalproduk = $produkModel->countProduk();
-    $produkTerbanyak = $produkModel->getProdukStokTerbanyak();
-    $produkTersedikit = $produkModel->getProdukStokTersedikit();
+require_once __DIR__ . '/../../../models/produk.php';
+$produkModel = new Produk();
+$keyword = isset($_GET['search']) ? $_GET['search'] : null;
+$produkList = $produkModel->getAllProduk($keyword);
+$totalproduk = $produkModel->countProduk();
+$produkTerbanyak = $produkModel->getProdukStokTerbanyak();
+$produkTersedikit = $produkModel->getProdukStokTersedikit();
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Stok Barang</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+
         body {
             background-color: #F4F6FF;
             font-family: Plus Jakarta Sans;
         }
-        .sidebar .logo{
+
+        .sidebar .logo {
             color: #F3C623;
         }
+
         .sidebar {
             height: 100vh;
             background-color: #10375C;
             color: #fff;
         }
+
         .sidebar a {
             color: #fff;
             text-decoration: none;
             display: block;
             padding: 12px 20px;
         }
+
         .sidebar a:hover {
             color: #F3C623;
+            /* background-color: #1D5D9A; */
         }
+
         .info-card {
             background-color: #10375C;
             color: #fff;
@@ -45,135 +55,125 @@
             text-align: center;
             min-height: 150px;
         }
+
         .info-card h3 {
             font-weight: bold;
         }
-        .table thead th{
+
+        .table thead th {
             background-color: #10375C;
             color: #F3C623;
         }
     </style>
 </head>
+
 <body>
-<div class="container-fluid">
-    <div class="row">
-        <!-- Sidebar -->
-        <div class="col-md-2 sidebar p-0">
-            <div class="logo p-3 fw-bold fs-5 d-flex gap-3"><img src="../../../assets/img/logo.png" alt="logo" width="35" height="35">Asri Raya Admin</div>
-            <a href="#"class="d-flex gap-2"><i class="bi bi-grid"></i>Dashboard</a>
-            <a href="#" class="d-flex gap-2"><i class="bi bi-inbox-fill"></i>Kasir</a>
-            <a href="#" class="d-flex gap-2" style="color: #F3C623"><i class="bi bi-archive"></i>Stok Barang</a>
-            <a href="../laporan_keuangan/laporan_keuangan.php" class="d-flex gap-2"><i class="bi bi-clipboard2-data"></i>Laporan Keuangan</a>
-            <a href="#" class="d-flex gap-2"><i class="bi bi-journal-text"></i>Manajemen Artikel</a>
-        </div>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <?php include "../includes/sidebar.php" ?>
 
-        <!-- Main Content -->
-        <div class="col-md-10 p-4">
-            <h2 class="mb-4 fw-bold">Stok Barang</h2>
+            <!-- Main Content -->
+            <div class="col-md-10 p-4">
+                <h2 class="mb-4 fw-bold">Stok Barang</h2>
 
-            <!-- Informasi Kartu -->
-            <div class="row mb-4">
-                <div class="col-md-4">
-                    <div class="info-card">
-                        <h3 style="color: #F3C623"><?= $totalproduk ?></h3>
-                        <p>Jumlah Barang</p>
+                <!-- Informasi Kartu -->
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="info-card">
+                            <h3 style="color: #F3C623"><?= $totalproduk ?></h3>
+                            <p>Jumlah Barang</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="info-card">
+                            <h3 style="color: #F3C623"><?= $produkTerbanyak['nama_produk'] ?></h3>
+                            <p>Barang Terbanyak</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="info-card">
+                            <h3 style="color: #F3C623"><?= $produkTersedikit['nama_produk'] ?></h3>
+                            <p>Barang Terendah</p>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="info-card">
-                        <h3 style="color: #F3C623"><?= $produkTerbanyak['nama_produk']?></h3>
-                        <p>Barang Terbanyak</p>
-                    </div>
+
+                <!-- Pencarian dan Tambah -->
+                <h2 class="mb-4 fw-bold">Daftar Barang</h2>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <form method="GET" class="mb-3 w-100" style="max-width: 600px;">
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="search" placeholder="Cari nama barang..." value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
+                            <button class="btn" style="background-color: #0d2a4c; color: #fff;" type="submit">Cari</button>
+                        </div>
+                    </form>
+                    <a href="tambahproduk.php"><button class="btn" style="background-color: #0d2a4c; color: #fff;">Tambah Barang <strong class="" style="color: #F3C623">+</strong></button></a>
                 </div>
-                <div class="col-md-4">
-                    <div class="info-card">
-                        <h3 style="color: #F3C623"><?= $produkTersedikit['nama_produk']?></h3>
-                        <p>Barang Tersedikit</p>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Pencarian dan Tambah -->
-            <h2 class="mb-4 fw-bold">Daftar Barang</h2>
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <form method="GET" class="mb-3 w-100" style="max-width: 600px;">
-                    <div class="input-group">
-                        <input type="text" class="form-control" name="search" placeholder="Cari nama barang..." value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
-                        <button class="btn" style="background-color: #0d2a4c; color: #fff;" type="submit">Cari</button>
-                    </div>
-                </form>
-                <a href="tambahproduk.php"><button class="btn" style="background-color: #0d2a4c; color: #fff;">Tambah Barang <strong class="" style="color: #F3C623">+</strong></button></a>
-            </div>
+                <!-- Tabel -->
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nama Barang</th>
+                            <th>Kategori</th>
+                            <th>Satuan</th>
+                            <th>Harga Jual</th>
+                            <th>Jumlah Stok</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php while ($row = $produkList->fetch(PDO::FETCH_ASSOC)): ?>
+                            <tr>
+                                <td><?php echo $row['nama_produk'] ?></td>
+                                <td><?php echo $row['nama_kategori'] ?></td>
+                                <td><?php echo $row['satuan'] ?></td>
+                                <td><?php echo $row['harga_jual'] ?></td>
+                                <td><?php echo $row['stok_produk'] ?></td>
+                                <td>
+                                    <div class="d-flex gap-1">
+                                        <!-- Tombol Edit -->
+                                        <a href="editproduk.php?id=<?= $row['id_produk'] ?>" class="btn btn-success btn-sm">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
 
-            <!-- Tabel -->
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Nama Barang</th>
-                        <th>Kategori</th>
-                        <th>Satuan</th>
-                        <th>Harga Beli</th>
-                        <th>Harga Jual</th>
-                        <th>Jumlah Stok</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php while ($row = $produkList->fetch(PDO::FETCH_ASSOC)): ?>
-                    <tr>
-                        <td><?php echo $row['nama_produk']?></td>
-                        <td><?php echo $row['nama_kategori']?></td>
-                        <td><?php echo $row['satuan']?></td>
-                        <td><?php echo $row['harga_beli']?></td>
-                        <td><?php echo $row['harga_jual']?></td>
-                        <td><?php echo $row['stok_produk']?></td>
-                        <td>
-                            <div class="d-flex gap-1">
-                                <!-- Tombol Edit -->
-                                <a href="editproduk.php?id=<?= $row['id_produk'] ?>" class="btn btn-success btn-sm">
-                                    <i class="bi bi-pencil-square"></i>
-                                </a>
+                                        <!-- Tombol Hapus (trigger modal) -->
+                                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalHapus<?= $row['id_produk'] ?>">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
 
-                                <!-- Tombol Hapus (trigger modal) -->
-                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalHapus<?= $row['id_produk'] ?>">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </div>
-
-                            <!-- Modal Konfirmasi Hapus -->
-                            <div class="modal fade" id="modalHapus<?= $row['id_produk'] ?>" tabindex="-1" aria-labelledby="modalLabel<?= $row['id_produk'] ?>" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header bg-danger text-white">
-                                            <h5 class="modal-title" id="modalLabel<?= $row['id_produk'] ?>">Konfirmasi Hapus</h5>
-                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            Apakah Anda yakin ingin menghapus <strong><?= $row['nama_produk'] ?></strong>?
-                                        </div>
-                                        <div class="modal-footer">
-                                            <form action="../../../controllers/stokController.php" method="POST">
-                                                <input type="hidden" name="id" value="<?= $row['id_produk'] ?>">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                                <button type="submit" name="hapus" class="btn btn-danger">Hapus</button>
-                                            </form>
+                                    <!-- Modal Konfirmasi Hapus -->
+                                    <div class="modal fade" id="modalHapus<?= $row['id_produk'] ?>" tabindex="-1" aria-labelledby="modalLabel<?= $row['id_produk'] ?>" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header bg-danger text-white">
+                                                    <h5 class="modal-title" id="modalLabel<?= $row['id_produk'] ?>">Konfirmasi Hapus</h5>
+                                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Apakah Anda yakin ingin menghapus <strong><?= $row['nama_produk'] ?></strong>?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <form action="../../../controllers/stokController.php" method="POST">
+                                                        <input type="hidden" name="id" value="<?= $row['id_produk'] ?>">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                                        <button type="submit" name="hapus" class="btn btn-danger">Hapus</button>
+                                                    </form>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <?php endwhile ?>
-                </tbody>
-            </table>
+                                </td>
+                            </tr>
+                        <?php endwhile ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
-
-<!-- Bootstrap Icon CDN -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-<!-- Bootstrap JS untuk modal -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
+
 </html>

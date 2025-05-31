@@ -29,7 +29,7 @@
             <form action="../../../controllers/stokController.php" method="POST">
                 <div class="mb-3">
                     <label class="form-label">Nama Barang</label>
-                    <input type="text" class="form-control" name="namaBarang" placeholder="Semen Gresik">
+                    <input type="text" class="form-control" name="namaBarang" placeholder="Masukkan Nama Barang">
                 </div>
 
                 <div class="row g-3">
@@ -45,25 +45,21 @@
                     </div>
                     <div class="col-md-6">
                         <label for="satuan" class="form-label">Satuan</label>
-                        <input type="text" class="form-control" name="satuan" placeholder="Sak">
+                        <input type="text" class="form-control" name="satuan" placeholder="Masukkan Satuan Barang">
                     </div>
                 </div>
 
                 <div class="row g-3 mt-2">
                     <div class="col-md-6">
-                        <label for="hargaBeli" class="form-label">Harga Beli</label>
-                        <input type="text" class="form-control" name="hargaBeli" placeholder="30.000">
-                    </div>
-                    <div class="col-md-6">
                         <label for="hargaJual" class="form-label">Harga Jual</label>
-                        <input type="text" class="form-control" name="hargaJual" placeholder="35.000">
+                        <input type="text" class="form-control" name="hargaJual" placeholder="Masukkan Harga Jual Barang">
                     </div>
                 </div>
 
                 <div class="row g-3 mt-2">
                     <div class="col-md-6">
                         <label for="jumlahStok" class="form-label">Jumlah Stok</label>
-                        <input type="number" class="form-control" name="jumlahStok" placeholder="200">
+                        <input type="number" class="form-control" name="jumlahStok" placeholder="Masukkan Jumlah Barang">
                     </div>
                 </div>
                 <div class="d-flex justify-content-end gap-3 mt-4">

@@ -9,19 +9,18 @@
     $kategori = $_POST['kategori'];
     $nama = $_POST['namaBarang'];
     $satuan = $_POST['satuan'];
-    $harga_beli = $_POST['hargaBeli'];
     $harga_jual = $_POST['hargaJual'];
     $stok = $_POST['jumlahStok'];
     $tanggal = date('Y-m-d H:i:s');
 
     if(isset($_POST['tambah'])){
-        $produkModel->tambahProduk($kategori,$nama,$satuan,$harga_beli,$harga_jual,$stok,$tanggal);
+        $produkModel->tambahProduk($kategori,$nama,$satuan,$harga_jual,$stok,$tanggal);
         header("Location: ../views/admin/manajemen_stok/manajemen_stok.php");
         exit();
     }
 
     if(isset($_POST['update'])){
-        $produkModel->updateProduk($id,$kategori, $nama, $satuan, $harga_beli, $harga_jual, $stok, $tanggal);
+        $produkModel->updateProduk($id,$kategori, $nama, $satuan, $harga_jual, $stok, $tanggal);
         header("Location: ../views/admin/manajemen_stok/manajemen_stok.php");
         exit();
     }
