@@ -1,8 +1,28 @@
 <?php
-require_once __DIR__ . '/../../../models/laporan.php';
+require_once _DIR_ . '/../../../models/laporan.php';
+
 $laporanModel = new Laporan();
-$laporanList = $laporanModel->getAllLaporan();
-$totalPemasukan = $laporanModel->getTotalPemasukan();
+
+if (isset($_GET['filter']) && isset($_GET['dari']) && isset($_GET['sampai'])) {
+    $dari_raw = $_GET['dari'];
+    $sampai_raw = $_GET['sampai'];
+
+    $date_dari = DateTime::createFromFormat('Y-m-d', $dari_raw);
+    $dari = $date_dari ? $date_dari->format('Y-m-d') : null;
+
+    $date_sampai = DateTime::createFromFormat('Y-m-d', $sampai_raw);
+    $sampai = $date_sampai ? $date_sampai->format('Y-m-d') : null;
+
+    $laporanList = $laporanModel->getLaporanByTanggal($dari, $sampai);
+
+    $totalPemasukan = 0;
+    foreach ($laporanList as $row) {
+        $totalPemasukan += $row['total_harga'];
+    }
+} else {
+    $laporanList = $laporanModel->getAllLaporan();
+    $totalPemasukan = $laporanModel->getTotalPemasukan();
+}
 ?>
 
 <!DOCTYPE html>
@@ -78,6 +98,57 @@ $totalPemasukan = $laporanModel->getTotalPemasukan();
                             <p>Total Pemasukan</p>
                         </div>
                     </div>
+
+                    <!-- Form Filter Tanggal -->
+                    <form method="GET" class="row g-3 mb-4">
+                        <div class="col-md-4">
+                            <label for="dari" class="form-label">Dari Tanggal</label>
+                            <input type="date" name="dari" class="form-control" value="<?= $_GET['dari'] ?? '' ?>">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="sampai" class="form-label">Sampai Tanggal</label>
+                            <input type="date" name="sampai" class="form-control" value="<?= $_GET['sampai'] ?? '' ?>">
+                        </div>
+                        <div class="col-md-4 d-flex align-items-end">
+                            <button type="submit" name="filter" class="btn btn-primary w-100">
+                                Filter Tanggal
+                            </button>
+                        </div>
+                    </form>
+
+
+                    <!-- Tabel Laporan Transaksi Kasir -->
+                    <div class="table-responsive mt-4">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Nama Produk</th>
+                                    <th>Jumlah Produk</th>
+                                    <th>Harga Satuan</th>
+                                    <th>Total Harga</th>
+                                    <th>Tanggal Transaksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if (!empty($laporanList)): ?>
+                                    <?php foreach ($laporanList as $row): ?>
+                                        <tr>
+                                            <td><?= $row['nama_produk'] ?></td>
+                                            <td><?= $row['jumlah_produk'] ?></td>
+                                            <td>Rp <?= number_format($row['harga_satuan'], 0, ',', '.') ?></td>
+                                            <td>Rp <?= number_format($row['total_harga'], 0, ',', '.') ?></td>
+                                            <td><?= date('Y-m-d', strtotime($row['tanggal_transaksi'])) ?></td>
+                                        </tr>
+                                    <?php endforeach ?>
+                                <?php else: ?>
+                                    <tr>
+                                        <td colspan="6" class="text-center">Tidak ada data transaksi.</td>
+                                    </tr>
+                                <?php endif ?>
+                            </tbody>
+                        </table>
+                    </div>
+
 
 </body>
 
