@@ -67,7 +67,7 @@
 <body>
 
 <div class="login-container">
-    <img src="img/logo.png" alt="Logo" class="logo-img">
+    <img src="assets/img/logo.png" alt="Logo" class="logo-img">
     
     <h2>Login</h2>
     <?php if (isset($_SESSION['error'])): ?>
