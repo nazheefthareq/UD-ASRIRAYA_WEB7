@@ -1,28 +1,11 @@
 <?php
-require_once __DIR__ . '/../../../models/laporan.php';
-
-$laporanModel = new Laporan();
-
-if (isset($_GET['filter']) && isset($_GET['dari']) && isset($_GET['sampai'])) {
-    $dari_raw = $_GET['dari'];
-    $sampai_raw = $_GET['sampai'];
-
-    $date_dari = DateTime::createFromFormat('Y-m-d', $dari_raw);
-    $dari = $date_dari ? $date_dari->format('Y-m-d') : null;
-
-    $date_sampai = DateTime::createFromFormat('Y-m-d', $sampai_raw);
-    $sampai = $date_sampai ? $date_sampai->format('Y-m-d') : null;
-
-    $laporanList = $laporanModel->getLaporanByTanggal($dari, $sampai);
-
-    $totalPemasukan = 0;
-    foreach ($laporanList as $row) {
-        $totalPemasukan += $row['total_harga'];
-    }
-} else {
-    $laporanList = $laporanModel->getAllLaporan();
-    $totalPemasukan = $laporanModel->getTotalPemasukan();
-}
+require_once __DIR__ . '/../../../models/produk.php';
+$produkModel = new Produk();
+$keyword = isset($_GET['search']) ? $_GET['search'] : null;
+$produkList = $produkModel->getAllProduk($keyword);
+$totalproduk = $produkModel->countProduk();
+$produkTerbanyak = $produkModel->getProdukStokTerbanyak();
+$produkTersedikit = $produkModel->getProdukStokTersedikit();
 ?>
 
 <!DOCTYPE html>
@@ -33,6 +16,7 @@ if (isset($_GET['filter']) && isset($_GET['dari']) && isset($_GET['sampai'])) {
     <title>Stok Barang</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
 
@@ -60,14 +44,16 @@ if (isset($_GET['filter']) && isset($_GET['dari']) && isset($_GET['sampai'])) {
 
         .sidebar a:hover {
             color: #F3C623;
+            /* background-color: #1D5D9A; */
         }
 
         .info-card {
             background-color: #10375C;
             color: #fff;
             border-radius: 10px;
-            padding: 20px;
+            padding: 35px;
             text-align: center;
+            min-height: 150px;
         }
 
         .info-card h3 {
@@ -86,69 +72,107 @@ if (isset($_GET['filter']) && isset($_GET['dari']) && isset($_GET['sampai'])) {
         <div class="row">
             <!-- Sidebar -->
             <?php include "../includes/sidebar.php" ?>
+
             <!-- Main Content -->
             <div class="col-md-10 p-4">
-                <h2 class="mb-4 fw-bold">Laporan Pemasukan</h2>
+                <h2 class="mb-4 fw-bold">Stok Barang</h2>
 
                 <!-- Informasi Kartu -->
                 <div class="row mb-4">
-                    <div class="col-xl">
-                        <div class="info-card py-5">
-                            <h3 style="color: #F3C623">Rp <?= number_format($totalPemasukan, 0, ',', '.') ?></h3>
-                            <p>Total Pemasukan</p>
+                    <div class="col-md-4">
+                        <div class="info-card">
+                            <h3 style="color: #F3C623"><?= $totalproduk ?></h3>
+                            <p>Jumlah Barang</p>
                         </div>
                     </div>
+                    <div class="col-md-4">
+                        <div class="info-card">
+                            <h3 style="color: #F3C623"><?= $produkTerbanyak['nama_produk'] ?></h3>
+                            <p>Barang Terbanyak</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="info-card">
+                            <h3 style="color: #F3C623"><?= $produkTersedikit['nama_produk'] ?></h3>
+                            <p>Barang Terendah</p>
+                        </div>
+                    </div>
+                </div>
 
-                    <!-- Form Filter Tanggal -->
-                    <form method="GET" class="row g-3 mb-4">
-                        <div class="col-md-4">
-                            <label for="dari" class="form-label">Dari Tanggal</label>
-                            <input type="date" name="dari" class="form-control" value="<?= $_GET['dari'] ?? '' ?>">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="sampai" class="form-label">Sampai Tanggal</label>
-                            <input type="date" name="sampai" class="form-control" value="<?= $_GET['sampai'] ?? '' ?>">
-                        </div>
-                        <div class="col-md-4 d-flex align-items-end">
-                            <button type="submit" name="filter" class="btn btn-primary w-100">
-                                Filter Tanggal
-                            </button>
+                <!-- Pencarian dan Tambah -->
+                <h2 class="mb-4 fw-bold">Daftar Barang</h2>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <form method="GET" class="mb-3 w-100" style="max-width: 600px;">
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="search" placeholder="Cari nama barang..." value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
+                            <button class="btn" style="background-color: #0d2a4c; color: #fff;" type="submit">Cari</button>
                         </div>
                     </form>
+                    <a href="tambahproduk.php"><button class="btn" style="background-color: #0d2a4c; color: #fff;">Tambah Barang <strong class="" style="color: #F3C623">+</strong></button></a>
+                </div>
 
+                <!-- Tabel -->
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nama Barang</th>
+                            <th>Kategori</th>
+                            <th>Satuan</th>
+                            <th>Harga Jual</th>
+                            <th>Jumlah Stok</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php while ($row = $produkList->fetch(PDO::FETCH_ASSOC)): ?>
+                            <tr>
+                                <td><?php echo $row['nama_produk'] ?></td>
+                                <td><?php echo $row['nama_kategori'] ?></td>
+                                <td><?php echo $row['satuan'] ?></td>
+                                <td><?php echo $row['harga_jual'] ?></td>
+                                <td><?php echo $row['stok_produk'] ?></td>
+                                <td>
+                                    <div class="d-flex gap-1">
+                                        <!-- Tombol Edit -->
+                                        <a href="editproduk.php?id=<?= $row['id_produk'] ?>" class="btn btn-success btn-sm">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
 
-                    <!-- Tabel Laporan Transaksi Kasir -->
-                    <div class="table-responsive mt-4">
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Nama Produk</th>
-                                    <th>Jumlah Produk</th>
-                                    <th>Harga Satuan</th>
-                                    <th>Total Harga</th>
-                                    <th>Tanggal Transaksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php if (!empty($laporanList)): ?>
-                                    <?php foreach ($laporanList as $row): ?>
-                                        <tr>
-                                            <td><?= $row['nama_produk'] ?></td>
-                                            <td><?= $row['jumlah_produk'] ?></td>
-                                            <td>Rp <?= number_format($row['harga_satuan'], 0, ',', '.') ?></td>
-                                            <td>Rp <?= number_format($row['total_harga'], 0, ',', '.') ?></td>
-                                            <td><?= date('Y-m-d', strtotime($row['tanggal_transaksi'])) ?></td>
-                                        </tr>
-                                    <?php endforeach ?>
-                                <?php else: ?>
-                                    <tr>
-                                        <td colspan="6" class="text-center">Tidak ada data transaksi.</td>
-                                    </tr>
-                                <?php endif ?>
-                            </tbody>
-                        </table>
-                    </div>
+                                        <!-- Tombol Hapus (trigger modal) -->
+                                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalHapus<?= $row['id_produk'] ?>">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
 
+                                    <!-- Modal Konfirmasi Hapus -->
+                                    <div class="modal fade" id="modalHapus<?= $row['id_produk'] ?>" tabindex="-1" aria-labelledby="modalLabel<?= $row['id_produk'] ?>" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header bg-danger text-white">
+                                                    <h5 class="modal-title" id="modalLabel<?= $row['id_produk'] ?>">Konfirmasi Hapus</h5>
+                                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Apakah Anda yakin ingin menghapus <strong><?= $row['nama_produk'] ?></strong>?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <form action="../../../controllers/stokController.php" method="POST">
+                                                        <input type="hidden" name="id" value="<?= $row['id_produk'] ?>">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                                        <button type="submit" name="hapus" class="btn btn-danger">Hapus</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endwhile ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
 </body>
 

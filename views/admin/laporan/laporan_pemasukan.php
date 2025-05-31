@@ -1,5 +1,5 @@
 <?php
-require_once _DIR_ . '/../../../models/laporan.php';
+require_once __DIR__ . '/../../../models/laporan.php';
 
 $laporanModel = new Laporan();
 
@@ -78,6 +78,11 @@ if (isset($_GET['filter']) && isset($_GET['dari']) && isset($_GET['sampai'])) {
             background-color: #10375C;
             color: #F3C623;
         }
+
+        .btn-filter {
+            background-color: #F3C623;
+            color: #10375C;
+        }
     </style>
 </head>
 
@@ -110,7 +115,7 @@ if (isset($_GET['filter']) && isset($_GET['dari']) && isset($_GET['sampai'])) {
                             <input type="date" name="sampai" class="form-control" value="<?= $_GET['sampai'] ?? '' ?>">
                         </div>
                         <div class="col-md-4 d-flex align-items-end">
-                            <button type="submit" name="filter" class="btn btn-primary w-100">
+                            <button type="submit" name="filter" class="btn btn-success w-100">
                                 Filter Tanggal
                             </button>
                         </div>
