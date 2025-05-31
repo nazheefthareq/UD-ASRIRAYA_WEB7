@@ -10,15 +10,12 @@ class ArtikelController
         $this->model = new Artikel();
     }
 
-    // Semua artikel 
     public function index()
     {
         $artikel = $this->model->getAllArtikel();
-        // View daftar artikel 
         require __DIR__ . '/../views/public/list_artikel.php';
     }
 
-    // Detail artikel berdasarkan id
     public function show($id)
     {
         $data = $this->model->getArtikelById($id);
@@ -29,13 +26,11 @@ class ArtikelController
         require __DIR__ . '/../views/public/detail_artikel.php';
     }
 
-    // FORM tambah artikel (admin)
     public function create()
     {
         require __DIR__ . '/../views/admin/manajemen_artikel_create.php';
     }
 
-    // Simpan artikel baru (admin)
     public function store()
     {
         $judul   = $_POST['judul_artikel'] ?? '';
@@ -43,7 +38,6 @@ class ArtikelController
         $gambar  = $_FILES['gambar']['name'] ?? '';
         $tanggal_publish = date('Y-m-d H:i:s');
 
-        // Upload gambar
         if ($gambar) {
             $target_dir = __DIR__ . '/../assets/img/';
             $target_file = $target_dir . basename($gambar);
@@ -59,7 +53,6 @@ class ArtikelController
         }
     }
 
-    // FORM edit artikel (admin)
     public function edit($id)
     {
         $data = $this->model->getArtikelById($id);
@@ -70,7 +63,6 @@ class ArtikelController
         require __DIR__ . '/../views/admin/manajemen_artikel_edit.php';
     }
 
-    // Update artikel (admin)
     public function update($id)
     {
         $judul   = $_POST['judul_artikel'] ?? '';
@@ -95,7 +87,6 @@ class ArtikelController
         }
     }
 
-    // Hapus artikel (admin)
     public function delete($id)
     {
         $success = $this->model->hapusArtikel($id);
