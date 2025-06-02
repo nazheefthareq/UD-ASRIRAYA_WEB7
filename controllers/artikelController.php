@@ -12,7 +12,7 @@ class ArtikelController
 
     public function index()
     {
-        $artikel = $this->model->getAllArtikel();
+        $artikelList = $this->model->getAllArtikel(); 
         require __DIR__ . '/../views/public/list_artikel.php';
     }
 
@@ -33,21 +33,43 @@ class ArtikelController
 
     public function store()
     {
-        $judul   = $_POST['judul_artikel'] ?? '';
-        $isi     = $_POST['isi_artikel'] ?? '';
+        $judul   = trim($_POST['judul_artikel'] ?? '');
+        $isi     = trim($_POST['isi_artikel'] ?? '');
+        if (empty($judul) || empty($isi)) {
+            echo "Judul dan isi artikel wajib diisi.";
+            exit;
+        }
+
         $gambar  = $_FILES['gambar']['name'] ?? '';
         $tanggal_publish = date('Y-m-d H:i:s');
 
-        if ($gambar) {
+        if ($gambar && $_FILES['gambar']['error'] === UPLOAD_ERR_OK) {
             $target_dir = __DIR__ . '/../assets/img/';
-            $target_file = $target_dir . basename($gambar);
-            move_uploaded_file($_FILES['gambar']['tmp_name'], $target_file);
+            $ext = pathinfo($gambar, PATHINFO_EXTENSION);
+            $newFileName = uniqid() . '.' . $ext;
+            $target_file = $target_dir . $newFileName;
+
+            $allowedTypes = ['jpg','jpeg','png','gif'];
+            if (!in_array(strtolower($ext), $allowedTypes)) {
+                echo "Tipe file tidak diizinkan.";
+                exit;
+            }
+
+            if (!move_uploaded_file($_FILES['gambar']['tmp_name'], $target_file)) {
+                echo "Gagal mengunggah gambar.";
+                exit;
+            }
+
+            $gambar = $newFileName;
+        } else {
+            $gambar = ''; 
         }
 
         $success = $this->model->tambahArtikel($judul, $isi, $gambar, $tanggal_publish);
 
         if ($success) {
             header("Location: admin.php?page=manajemen_artikel");
+            exit;
         } else {
             echo "Gagal menambah artikel";
         }
@@ -65,15 +87,34 @@ class ArtikelController
 
     public function update($id)
     {
-        $judul   = $_POST['judul_artikel'] ?? '';
-        $isi     = $_POST['isi_artikel'] ?? '';
+        $judul   = trim($_POST['judul_artikel'] ?? '');
+        $isi     = trim($_POST['isi_artikel'] ?? '');
+        if (empty($judul) || empty($isi)) {
+            echo "Judul dan isi artikel wajib diisi.";
+            exit;
+        }
+
         $gambar  = $_FILES['gambar']['name'] ?? '';
         $tanggal_publish = date('Y-m-d H:i:s');
 
-        if ($gambar) {
+        if ($gambar && $_FILES['gambar']['error'] === UPLOAD_ERR_OK) {
             $target_dir = __DIR__ . '/../assets/img/';
-            $target_file = $target_dir . basename($gambar);
-            move_uploaded_file($_FILES['gambar']['tmp_name'], $target_file);
+            $ext = pathinfo($gambar, PATHINFO_EXTENSION);
+            $newFileName = uniqid() . '.' . $ext;
+            $target_file = $target_dir . $newFileName;
+
+            $allowedTypes = ['jpg','jpeg','png','gif'];
+            if (!in_array(strtolower($ext), $allowedTypes)) {
+                echo "Tipe file tidak diizinkan.";
+                exit;
+            }
+
+            if (!move_uploaded_file($_FILES['gambar']['tmp_name'], $target_file)) {
+                echo "Gagal mengunggah gambar.";
+                exit;
+            }
+
+            $gambar = $newFileName;
         } else {
             $gambar = $_POST['gambar_lama'] ?? '';
         }
@@ -82,6 +123,7 @@ class ArtikelController
 
         if ($success) {
             header("Location: admin.php?page=manajemen_artikel");
+            exit;
         } else {
             echo "Gagal mengupdate artikel";
         }
@@ -92,6 +134,7 @@ class ArtikelController
         $success = $this->model->hapusArtikel($id);
         if ($success) {
             header("Location: admin.php?page=manajemen_artikel");
+            exit;
         } else {
             echo "Gagal menghapus artikel";
         }
