@@ -1,7 +1,7 @@
 <?php
-require_once __DIR__ . '/../../controllers/artikelController.php';
+require_once __DIR__ . '/../../models/artikel.php';
 
-$controller = new ArtikelController();
+$controller = new Artikel();
 $artikelList = $controller->getAllArtikel();
 ?>
 

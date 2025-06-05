@@ -63,6 +63,9 @@
             <!-- Main Content -->
             <div class="col-md-10 p-4">
                 <h2 class="mb-4 fw-bold">Selamat Datang di Sistem Admin Asri Raya</h2>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

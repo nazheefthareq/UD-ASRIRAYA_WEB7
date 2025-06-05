@@ -95,6 +95,12 @@
 
 <div class="col-md-10 p-4">
     <h2 class="mb-4 fw-bold">Sistem Kasir</h2>
+    <form method="GET" class="mb-3 w-100" style="max-width: 600px;">
+        <div class="input-group">
+            <input type="text" class="form-control" name="search" placeholder="Cari nama barang..." value="<?= isset($_GET['searchkasir']) ? htmlspecialchars($_GET['searchkasir']) : '' ?>">
+            <button class="btn" style="background-color: #0d2a4c; color: #fff;" type="submit">Cari</button>
+        </div>
+    </form>
 
     <div class="row">
         <?php foreach ($produkList as $p): ?>
@@ -117,7 +123,7 @@
         <?php endforeach ?>
     </div>
 
-<div class="container mt-5">
+<div class="container mt-2">
     <div class="card shadow">
         <div class="card-header bg-utama p-3 text-white">
             <h4 class="mb-0">Keranjang</h4>
