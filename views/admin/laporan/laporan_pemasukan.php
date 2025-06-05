@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../../controllers/authController.php'; 
 require_once __DIR__ . '/../../../models/laporan.php';
 
 $laporanModel = new Laporan();

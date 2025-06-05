@@ -1,6 +1,6 @@
 <?php
+    require_once __DIR__ . '/../../../controllers/authController.php'; 
     require_once __DIR__ . '/../../../models/Produk.php';
-    session_start();
 
     $produkModel = new Produk();
     $produkList = $produkModel->getAllProduk();
