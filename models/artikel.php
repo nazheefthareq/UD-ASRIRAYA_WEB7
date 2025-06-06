@@ -34,4 +34,16 @@ class Artikel {
         $stmt = $this->conn->prepare("DELETE FROM artikel WHERE id_artikel = ?");
         return $stmt->execute([$id]);
     }
+
+    public function countArtikel(){
+        $query = $this->conn->query("SELECT COUNT(*) AS total FROM artikel");
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+        return $result['total'];
+    }
+
+    public function getlimaartikel(){
+        $stmt = $this->conn->prepare("SELECT * FROM artikel ORDER BY tanggal_publish DESC LIMIT 5");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

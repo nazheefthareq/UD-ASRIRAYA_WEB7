@@ -12,7 +12,7 @@
             Keuangan</a>
         <a href="../artikel/manajemen_artikel.php" class="d-flex gap-4 p-2"><i class="bi bi-journal-text"></i>Manajemen Artikel</a>
 
-        <div style="margin-bottom: 60vh"></div>
+        <div style="margin-bottom: 47vh"></div>
         <a href="/UD-ASRIRAYA_WEB7/logout.php" class="d-flex gap-4 p-2">
             <i class="bi bi-box-arrow-right"></i>Logout
         </a>

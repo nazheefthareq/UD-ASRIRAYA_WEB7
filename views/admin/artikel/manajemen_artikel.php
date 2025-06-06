@@ -21,6 +21,10 @@ $artikelList = $artikelModel->getAllArtikel();
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
+        .sidebar .logo {
+            color: #F3C623;
+        }
+
         .sidebar {
             height: 100vh;
             background-color: #10375C;
