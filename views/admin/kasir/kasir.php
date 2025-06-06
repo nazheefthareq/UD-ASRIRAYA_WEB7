@@ -3,11 +3,10 @@
     require_once __DIR__ . '/../../../models/Produk.php';
 
     $produkModel = new Produk();
-    $produkList = $produkModel->getAllProduk();
+    $keyword = isset($_GET['search']) ? $_GET['search'] : null;
+    $produkList = $produkModel->getAllProduk($keyword);
     $keranjang = $_SESSION['keranjang'] ?? [];
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -97,7 +96,7 @@
     <h2 class="mb-4 fw-bold">Sistem Kasir</h2>
     <form method="GET" class="mb-3 w-100" style="max-width: 600px;">
         <div class="input-group">
-            <input type="text" class="form-control" name="search" placeholder="Cari nama barang..." value="<?= isset($_GET['searchkasir']) ? htmlspecialchars($_GET['searchkasir']) : '' ?>">
+            <input type="text" class="form-control" name="search" placeholder="Cari nama barang..." value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
             <button class="btn" style="background-color: #0d2a4c; color: #fff;" type="submit">Cari</button>
         </div>
     </form>

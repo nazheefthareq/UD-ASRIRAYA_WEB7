@@ -3,6 +3,12 @@ require_once __DIR__ . '/../../../controllers/authController.php';
 require_once __DIR__ . '/../../../models/artikel.php';
 $artikelModel = new Artikel();
 $artikelList = $artikelModel->getAllArtikel();
+if (isset($_GET['search']) && !empty(trim($_GET['search']))) {
+    $search = trim($_GET['search']);
+    $artikelList = $artikelModel->searchArtikel($search);
+} else {
+    $artikelList = $artikelModel->getAllArtikel();
+}
 ?>
 
 <!DOCTYPE html>
@@ -62,7 +68,7 @@ $artikelList = $artikelModel->getAllArtikel();
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <form method="GET" class="mb-3 w-100" style="max-width: 600px;">
                     <div class="input-group">
-                        <input type="text" class="form-control" name="search" placeholder="Cari judul artikel...">
+                        <input type="text" class="form-control" name="search" placeholder="Cari judul artikel..." value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
                         <button class="btn" style="background-color: #0d2a4c; color: #fff;" type="submit">Cari</button>
                     </div>
                 </form>

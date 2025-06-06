@@ -46,4 +46,13 @@ class Artikel {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function searchArtikel($keyword)
+    {
+    $sql = "SELECT * FROM artikel WHERE judul_artikel LIKE :keyword ORDER BY tanggal_publish DESC";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->bindValue(':keyword', '%' . $keyword . '%', PDO::PARAM_STR);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
