@@ -41,7 +41,7 @@ if (isset($_GET['id'])) {
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Gambar (opsional)</label>
+                <label class="form-label">Gambar</label>
                 <input type="file" class="form-control" name="gambar">
             </div>
 

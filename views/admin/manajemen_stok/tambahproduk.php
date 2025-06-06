@@ -29,7 +29,7 @@
             <form action="../../../controllers/stokController.php" method="POST">
                 <div class="mb-3">
                     <label class="form-label">Nama Barang</label>
-                    <input type="text" class="form-control" name="namaBarang" placeholder="Masukkan Nama Barang">
+                    <input type="text" class="form-control" name="namaBarang" placeholder="Masukkan Nama Barang" required>
                 </div>
 
                 <div class="row g-3">
@@ -45,21 +45,21 @@
                     </div>
                     <div class="col-md-6">
                         <label for="satuan" class="form-label">Satuan</label>
-                        <input type="text" class="form-control" name="satuan" placeholder="Masukkan Satuan Barang">
+                        <input type="text" class="form-control" name="satuan" placeholder="Masukkan Satuan Barang" required>
                     </div>
                 </div>
 
                 <div class="row g-3 mt-2">
                     <div class="col-md-6">
                         <label for="hargaJual" class="form-label">Harga Jual</label>
-                        <input type="text" class="form-control" name="hargaJual" placeholder="Masukkan Harga Jual Barang">
+                        <input type="text" class="form-control" name="hargaJual" placeholder="Masukkan Harga Jual Barang" required>
                     </div>
                 </div>
 
                 <div class="row g-3 mt-2">
                     <div class="col-md-6">
                         <label for="jumlahStok" class="form-label">Jumlah Stok</label>
-                        <input type="number" class="form-control" name="jumlahStok" placeholder="Masukkan Jumlah Barang">
+                        <input type="number" class="form-control" name="jumlahStok" placeholder="Masukkan Jumlah Barang" required> 
                     </div>
                 </div>
                 <div class="d-flex justify-content-end gap-3 mt-4">
