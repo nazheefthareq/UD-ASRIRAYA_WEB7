@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../../controllers/authController.php'; 
 require_once __DIR__ . '/../../../models/artikel.php';
 $artikelModel = new Artikel();
 $artikelList = $artikelModel->getAllArtikel();
@@ -18,6 +19,10 @@ $artikelList = $artikelModel->getAllArtikel();
         body {
             background-color: #F4F6FF;
             font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .sidebar .logo {
+            color: #F3C623;
         }
 
         .sidebar {

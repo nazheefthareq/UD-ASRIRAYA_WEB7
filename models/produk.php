@@ -81,5 +81,12 @@
             $stmt = $this->conn->prepare("UPDATE stok_produk SET stok_produk = stok_produk - ? WHERE id_produk = ?");
             return $stmt->execute([$jumlah, $id]);
         }
+
+        public function getlimabarang(){
+            $sql = "SELECT sp.id_produk,kp.nama_kategori, sp.nama_produk, sp.satuan, sp.harga_jual, sp.stok_produk FROM stok_produk sp JOIN kategori_produk kp ON sp.id_kategori = kp.id_kategori LIMIT 5";
+            $stmt = $this->conn->query($sql);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
     }
 ?>
