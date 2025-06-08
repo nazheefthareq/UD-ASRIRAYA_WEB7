@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['loggedin'] = true;
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['username'] = $user['username'];
-            
+
             header('Location: views/admin/dashboard/dashboard.php');
             exit();
         } else {
@@ -37,13 +37,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Login</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600&display=swap" rel="stylesheet">
     <style>
-                * {
+        * {
             box-sizing: border-box;
         }
+
         body {
             height: 100vh;
             background-color: #f2f3fb;
@@ -52,27 +54,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             justify-content: center;
             align-items: center;
         }
+
         .login-container {
             width: 350px;
             background-color: #10375C;
             padding: 30px;
             border-radius: 10px;
             color: #fff;
-            border: 1px solid black; 
+            border: 1px solid black;
         }
+
         .logo-img {
             display: block;
             margin: 0 auto 20px auto;
             width: 60px;
             height: 60px;
         }
+
         h2 {
             text-align: center;
             font-weight: 600;
             margin-bottom: 20px;
             font-size: 30px;
         }
-        input[type="text"], input[type="password"], .btn {
+
+        input[type="text"],
+        input[type="password"],
+        .btn {
             width: 100%;
             padding: 12px;
             margin: 10px 0;
@@ -80,9 +88,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             border-radius: 5px;
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
-        input[type="text"], input[type="password"] {
+
+        input[type="text"],
+        input[type="password"] {
             background-color: #c6d1e0;
         }
+
         .btn {
             background-color: #F3C623;
             color: black;
@@ -90,6 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             font-weight: 600;
             cursor: pointer;
         }
+
         .error-msg {
             background: #ffe5e5;
             color: red;
@@ -98,21 +110,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             border-radius: 5px;
             text-align: center;
         }
+
+        .center-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .public-link {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .public-link a {
+            color: #10375C;
+            font-weight: 550;
+        }
+
     </style>
 </head>
+
 <body>
-    <div class="login-container">
-        <img src="assets/img/logo.png" alt="Logo" class="logo-img">
-        
-        <h2>Login</h2>
-        <?php if (isset($_SESSION['error'])): ?>
-            <div class="error-msg"><?= $_SESSION['error']; unset($_SESSION['error']); ?></div>
-        <?php endif; ?>
-        <form action="login.php" method="POST">
-            <input type="text" name="username" placeholder="Enter your username..." required>
-            <input type="password" name="password" placeholder="Enter your password..." required>
-            <button type="submit" class="btn">Continue</button>
-        </form>
+    <div class="center-wrapper">
+        <div class="login-container">
+            <img src="assets/img/logo.png" alt="Logo" class="logo-img">
+
+            <h2>Login</h2>
+            <?php if (isset($_SESSION['error'])): ?>
+                <div class="error-msg"><?= $_SESSION['error'];
+                                        unset($_SESSION['error']); ?></div>
+            <?php endif; ?>
+            <form action="login.php" method="POST">
+                <input type="text" name="username" placeholder="Enter your username..." required>
+                <input type="password" name="password" placeholder="Enter your password..." required>
+                <button type="submit" class="btn">Continue</button>
+            </form>
+        </div>
+        <div class="public-link">
+            <a href="views/public/beranda.php">Pergi ke Halaman Publik</a>
+        </div>
     </div>
 </body>
+
 </html>
