@@ -13,13 +13,21 @@
         }
 
         #hero {
-            background-color: #f8f9fa;
-            padding: 60px 0;
+            background: linear-gradient(to right, rgba(255, 255, 255, 0.8) 30%, rgba(255, 255, 255, 0) 100%),
+                url('../../assets/img/hero.jpg') center center/cover no-repeat;
+            background-size: cover;
+            color: #10375C;
+            /* pastikan warna teks tetap kontras */
+            padding: 10rem 0;
+            position: relative;
+            overflow: hidden;
         }
+
 
         #hero h1 {
             font-size: 2.5rem;
             font-weight: 700;
+            color: #10375C;
         }
 
         footer {
@@ -30,7 +38,7 @@
 
         /* Navbar styling */
         .navbar-custom {
-            background-color: #10375C;
+            background-color: #10375c;
             z-index: 1020;
         }
 
@@ -61,12 +69,14 @@
 
     <main style="margin-top: 5rem;">
         <section id="hero">
-            <div class="container">
-                <h1>UD ASRI RAYA</h1>
-                <p class="lead">Selamat Datang di Website UD Asri Raya. <br>
-                    Kami memberikan pelayanan dan solusi terbaik untuk segala kebutuhan bangunan Anda.</p>
+            <div class="container position-relative text-dark">
+                <h1 class="py-2">UD ASRI RAYA</h1>
+                <p class="lead">Selamat Datang di Website UD Asri Raya.<br>
+                    Kami memberikan pelayanan dan solusi terbaik untuk segala kebutuhan bangunan Anda.
+                </p>
             </div>
         </section>
+
 
         <section id="about" class="py-5">
             <div class="container">
@@ -84,7 +94,7 @@
                 <h2 class="mb-4">Lokasi</h2>
                 <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d294.182670022656!2d112.71284101353615!3d-7.236911174854169!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zN8KwMTQnMTIuOSJTIDExMsKwNDInNDYuNSJF!5e0!3m2!1sen!2sid!4v1749308983097!5m2!1sen!2sid"
                     width="300" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                <p>Jl. Tambak Asri No.174, Morokrembangan, Kec. Krembangan, Kota SBY, Jawa Timur 60178, Indonesia, Kota Surabaya.</p>
+                <p>Jl. Tambak Asri No.174, Morokrembangan, Kec. Krembangan, Kota Surabaya, Jawa Timur 60178, Indonesia.</p>
             </div>
         </section>
 
