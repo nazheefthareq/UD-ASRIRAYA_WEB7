@@ -103,7 +103,7 @@
 
                 <!-- Konten Artikel -->
                 <div class="artikel-content">
-                    <?= $artikellist['isi_artikel'] ?>
+                    <?= nl2br(htmlspecialchars($artikellist['isi_artikel'])) ?>
                 </div>
 
                 <!-- Tombol Kembali -->
