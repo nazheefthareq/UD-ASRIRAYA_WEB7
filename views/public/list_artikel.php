@@ -1,3 +1,9 @@
+<?php
+    require_once __DIR__ . '/../../models/artikel.php';
+    $artikelmodel = new Artikel();
+    $artikellist = $artikelmodel->getAllArtikel();
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 
@@ -85,20 +91,20 @@
     <main class="container" style="margin-top: 10rem;">
         <h1 class="mb-4">Daftar Artikel</h1>
         <div class="row g-4">
-            <!-- LOOP PAKE PHP WIL BUAT BAGIAN YANG INI NANTI -->
+            <?php foreach ($artikellist as $row): ?>
             <div class="col-12 col-md-6 col-lg-4">
                 <div class="card h-100 shadow-sm">
-                    <!-- AMBEK BAGIAN NGISOR IKI GAE GAMBAR, NGKO GAE OPO ENGGAK E SEMBARANGMU, LEK GAPAKE DIHAPUS AE -->
-                    <!-- <img src="https://via.placeholder.com/600x400" class="card-img-top" alt="Thumbnail Artikel"> -->
+                    <img src="../../uploads/<?= $row['gambar']?>" class="card-img-top" alt="Thumbnail Artikel">
                     <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">Judul Artikel 1</h5>
-                        <p class="card-text">Ini adalah deskripsi singkat artikel yang akan ditampilkan pada daftar artikel.</p>
+                        <h5 class="card-title"><?= $row['judul_artikel']?></h5>
+                        <p class="card-text"><?= substr(strip_tags($row['isi_artikel']),0,150) ?></p>
                         <div class="mt-auto">
-                            <a href="detail_artikel.php" class="btn btn-detail w-100">Baca Selengkapnya</a>
+                            <a href="detail_artikel.php?id=<?= $row['id_artikel']?>" class="btn btn-detail w-100">Baca Selengkapnya</a>
                         </div>
                     </div>
                 </div>
             </div>
+            <?php endforeach ?>
 
         </div>
     </main>

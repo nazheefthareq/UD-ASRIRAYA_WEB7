@@ -1,3 +1,16 @@
+<?php
+    require_once __DIR__ . '/../../models/artikel.php';
+
+    $artikelmodel = new Artikel();
+
+    if (isset($_GET['id'])) {
+        $artikellist = $artikelmodel->getArtikelById($_GET['id']);
+    } else {
+        header("Location: list_artikel.php");
+        exit();
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 
@@ -74,15 +87,15 @@
         <div class="row">
             <div class="col-lg-8 offset-lg-2">
                 <!-- Thumbnail Artikel -->
-                <img src="https://via.placeholder.com/800x400" alt="Thumbnail Artikel" class="img-fluid rounded mb-4 shadow-sm">
+                <img src="../../uploads/<?= $artikellist['gambar']?>" alt="Thumbnail Artikel" class="img-fluid rounded mb-4 shadow-sm">
 
                 <!-- Judul Artikel -->
-                <h1 class="artikel-title mb-3">Judul Artikel</h1>
+                <h1 class="artikel-title mb-3"><?= $artikellist['judul_artikel']?></h1>
 
                 <!-- Tanggal dan Penulis -->
                 <div class="mb-3 text-muted">
                     <small>
-                        <i class="bi bi-calendar-event"></i> 08 Juni 2025
+                        <i class="bi bi-calendar-event"></i> <?= $artikellist['tanggal_publish']?>
                         &nbsp;|&nbsp;
                         <i class="bi bi-person"></i> Admin
                     </small>
@@ -90,19 +103,7 @@
 
                 <!-- Konten Artikel -->
                 <div class="artikel-content">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae enim eu quam feugiat
-                        sollicitudin.
-                        Curabitur vulputate, sapien ut fermentum consequat, libero ligula gravida neque, at rutrum
-                        libero
-                        massa et nulla.</p>
-                    <p>Nullam eget facilisis turpis. Vivamus a purus vitae nisi blandit consequat. Praesent ut diam
-                        vitae
-                        nunc cursus gravida at eget sapien. Sed vel dapibus arcu, sed dignissim lorem.</p>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non sem sit amet nisl bibendum
-                        eleifend.
-                        Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
-                        Sed
-                        congue magna vel erat bibendum, nec fermentum risus ultrices.</p>
+                    <?= $artikellist['isi_artikel'] ?>
                 </div>
 
                 <!-- Tombol Kembali -->
